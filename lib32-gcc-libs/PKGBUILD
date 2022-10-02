@@ -1,0 +1,32 @@
+# Maintainer: Panda <panda@rebornos.org>
+
+pkgname=lib32-gcc-libs
+pkgver=12.1.0
+pkgrel=2.1
+pkgdesc='32-bit runtime libraries shipped by GCC'
+arch=(aarch64)
+depends=('lib32-glibc>=2.27')
+provides=(libgo.so libgfortran.so libubsan.so libasan.so)
+groups=(multilib-devel, 32bitapp)
+options=(!emptydirs )
+license=(GPL3 LGPL FDL custom)
+url='https://gcc.gnu.org'
+makedepends=()
+checkdepends=(
+  dejagnu
+  expect
+  inetutils
+  python-pytest
+  tcl
+)
+source=($pkgname-$pkgver-$pkgrel.tar.xz::http://de.mirror.archlinuxarm.org/armv7h/core/gcc-libs-$pkgver-$pkgrel-armv7h.pkg.tar.xz)
+md5sums=('229f623ddbffdcd23ddbf6f6e71b43dc')
+
+package() {
+  cd $srcdir
+  mkdir -p $pkgdir/usr/lib32
+  cp -va $srcdir/usr/lib/* $pkgdir/usr/lib32/
+  mkdir -p $pkgdir/usr/share/licenses/$pkgname/
+  install -m644 $srcdir/usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION $pkgdir/usr/share/licenses/$pkgname/
+}
+
